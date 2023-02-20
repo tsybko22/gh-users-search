@@ -1,0 +1,17 @@
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-switcher__icon {
+  font-size: var(--fs-md);
+  cursor: pointer;
+}
+
+.theme-switcher__text {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  text-transform: capitalize;
+  cursor: pointer;
+}
