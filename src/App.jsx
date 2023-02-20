@@ -37,7 +37,6 @@ const App = () => {
           .sort((a, b) => b.stargazers_count - a.stargazers_count)
           .slice(0, 4);
 
-        console.log(topRepos);
         setUser({ ...userInfo, repos: topRepos });
         setIsLoading(false);
         setIsError(false);
