@@ -4,11 +4,11 @@
 
 ## Description
 
-This is a React application that allows users to search for other Github users by entering their username. The app uses Github API to fetch user data and display it in an easy-to-read format.
+This is a React application that allows users to search for other Github users by entering their username. Developed with mobile-first approach. The app uses Github API to fetch user data and display it in an easy-to-read format.
 
 ## Usage
 
-Once the app is running, enter a Github username in the search bar and click "Search". The app will retrieve information about the user, including their name, avatar, username, number of followers and number of repositories. If the user does not exist or if there is an error, an appropriate message will be displayed.
+Once the app is running, enter a Github username in the search bar and click "Search". The app will retrieve information about the user, including their name, avatar, username, number of followers and number of repositories. If the user does not exist or if there is an error, an appropriate message will be displayed. Also this project have a light/dark theme switch. Theme switch is also built to save user's preference on their local machine, allowing them to maintain their preferred theme across different sessions.
 
 ### Technologies Used
 
