@@ -1,53 +1,55 @@
 import { useEffect, useState } from 'react';
 
-import { useAlert } from './context/AlertContext';
+import { MoonLoader } from 'react-spinners';
 
 import Alert from './components/Alert';
 import Container from './components/Container';
 import Header from './components/Header';
 import User from './components/User';
 
-import { API_BASE_URL } from './config.js';
-
-import { MoonLoader } from 'react-spinners';
+import { getUser, getUserRepos } from './api/config.js';
 
 const App = () => {
   const [user, setUser] = useState({});
   const [username, setUsername] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const { handleToggleAlert } = useAlert();
+  const [error, setError] = useState({});
 
   const handleSearch = (username) => setUsername(username);
-
-  const getUser = async (username) => {
-    const userResponse = await fetch(API_BASE_URL + username);
-    const reposResponse = await fetch(API_BASE_URL + username + '/repos');
-
-    userResponse.json().then((userInfo) => {
-      if (userInfo.message) {
-        setIsError(true);
-        setIsLoading(false);
-        handleToggleAlert();
-        return;
-      }
-      setUser(userInfo);
-      reposResponse.json().then((repos) => {
-        const topRepos = repos
-          .sort((a, b) => b.stargazers_count - a.stargazers_count)
-          .slice(0, 4);
-
-        setUser({ ...userInfo, repos: topRepos });
-        setIsLoading(false);
-        setIsError(false);
-      });
-    });
-  };
 
   useEffect(() => {
     if (username !== '') {
       setIsLoading(true);
-      getUser(username);
+
+      Promise.all([getUser(username), getUserRepos(username)])
+        .then((results) => {
+          const userData = results[0].data;
+          //Sort repos by popular and leave only 4 repos
+          const reposData = results[1].data
+            .sort((a, b) => b.stargazers_count - a.stargazers_count)
+            .slice(0, 4);
+
+          setUser({ ...userData, repos: reposData });
+          setIsLoading(false);
+          setError({ isError: false });
+        })
+        .catch((err) => {
+          if (err.response) {
+            setUser({});
+            setError({
+              isError: true,
+              message: err.response.data.message,
+            });
+            setIsLoading(false);
+          } else {
+            setUser({});
+            setError({
+              isError: true,
+              message: err.message,
+            });
+            setIsLoading(false);
+          }
+        });
     }
   }, [username]);
 
@@ -67,8 +69,10 @@ const App = () => {
               speedMultiplier={0.7}
             />
           )}
-          {!isError && !isLoading && <User {...user} />}
-          <Alert alertMessage={`User "${username}" not found`} />
+          {!error.isError && !isLoading && <User {...user} />}
+          {error.isError && !isLoading && (
+            <Alert alertMessage={error.message} />
+          )}
         </Container>
       </main>
     </>
