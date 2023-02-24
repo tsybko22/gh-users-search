@@ -18,3 +18,4 @@ This app was built using the following technologies:
 - React Context
 - [React Icons](https://github.com/react-icons/react-icons)
 - [React Spinners](https://github.com/davidhu2000/react-spinners)
+- [Axios](https://github.com/axios/axios)
