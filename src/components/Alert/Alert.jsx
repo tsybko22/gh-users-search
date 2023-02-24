@@ -1,8 +1,12 @@
-import { useAlert } from '../../context/AlertContext';
+import { useState } from 'react';
 import './Alert.css';
 
 const Alert = ({ alertMessage }) => {
-  const { isVisible, handleToggleAlert } = useAlert();
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleCloseAlert = () => {
+    setIsVisible(false);
+  };
 
   if (!isVisible) {
     return null;
@@ -12,7 +16,7 @@ const Alert = ({ alertMessage }) => {
     <div className="alert">
       <h2 className="alert__message">{alertMessage}</h2>
       <button
-        onClick={handleToggleAlert}
+        onClick={handleCloseAlert}
         className="btn"
       >
         Close
