@@ -8,7 +8,13 @@ const useTheme = () => {
 
 const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light';
+    const localTheme = localStorage.getItem('theme');
+    const isSystemThemeDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    const defaultTheme = isSystemThemeDark ? 'dark' : 'light';
+
+    return localTheme || defaultTheme;
   });
 
   const handleToggleTheme = () => {
